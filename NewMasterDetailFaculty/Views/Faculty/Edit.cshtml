@@ -1,0 +1,133 @@
+﻿@model NewMasterDetailFaculty.Models.Faculty
+
+@using (Html.BeginForm("Edit", "Faculty", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <h3>Edit Page</h3>
+    <div class="form bg-dark text-white p-3">
+        <h3 class="text-center text-primary">Faculty Part</h3>
+        <hr />
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="form-group row mb-2">
+            @Html.LabelFor(model => model.FacultyName, htmlAttributes: new { @class = "form-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FacultyName, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group row mb-2">
+            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "form-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group row mb-2">
+            @Html.LabelFor(model => model.CourseName, htmlAttributes: new { @class = "form-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CourseName, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group row mb-2">
+            @Html.LabelFor(model => model.CourseStartDate, htmlAttributes: new { @class = "form-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.CourseStartDate, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+            </div>
+        </div>
+
+        <div class="form-group row mb-2">
+            <label class="form-label col-md-2">Change Picture</label>
+            <div class="col-md-10">
+                <input type="file" name="Picture" class="form-control" accept="image/*" />
+            </div>
+        </div>
+
+        <div class="form-check mb-2">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.IsRunning, new { htmlAttributes = new { @class = "form-check-input" } })
+            </div>
+            @Html.LabelFor(model => model.IsRunning, htmlAttributes: new { @class = "form-label col-md-2" })
+        </div>
+
+        <div class="card bg-light text-dark p-3 mb-3">
+            <h3 class="card-title text-center text-secondary">Student Part</h3>
+            <div class="row mb-3">
+                <div class="d-none">
+                    @Html.Label("sId", "ID", htmlAttributes: new { @class = "input-group-text" })
+                    @Html.TextBox("sId", null, new { @class = "form-control" })
+                </div>
+                <div class="d-none">
+                    @Html.Label("sName", "Name", htmlAttributes: new { @class = "input-group-text" })
+                    @Html.TextBox("sName", null, new { @class = "form-control" })
+                </div>
+                <div class="d-none">
+                    @Html.Label("sAddress", "Address", htmlAttributes: new { @class = "input-group-text" })
+                    @Html.TextBox("sAddress", null, new { @class = "form-control" })
+                </div>
+                <div class="form-group d-flex justify-content-end">
+                    <input type="button" class="btn  btn-primary" id="addBtn" value="Add Student" />
+                </div>
+
+            </div>
+            <table class="table table-danger">
+                <tbody id="studentTable">
+                    @foreach (var item in Model.Students.Select((value, index) => new { value, index }))
+                    {
+                        <tr>
+                            <td><input type="number" class="form-control" name="Students[@item.index].ID" value="@item.value.ID" required placeholder="Student ID.." /></td>
+                            <td><input type="text" class="form-control" name="Students[@item.index].StudentName" value="@item.value.StudentName" required placeholder="Student Name.." /></td>
+                            <td><input type="text" class="form-control" name="Students[@item.index].Address" value="@item.value.Address" required placeholder="Student Address.." /></td>
+                            <td><input class="btn btn-danger" type="button" value="Remove" onclick="Remove(this)" id="deleteBtn" /></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-12">
+                <input type="submit" value="Update" class="btn btn-lg btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        // for addBtn Student ADD
+        $("#addBtn").click(() => {
+            createRowForStudent();
+        })
+        function createRowForStudent() {
+            let selectedData = getStudentData();
+            let index = $("#studentTable").children("tr").length;
+            let tr = `<tr>
+                                    <td><input type="number" class="form-control" name="Students[${index}].ID" value="${selectedData.sId}" required placeholder="Student ID.."/></td>
+                                    <td><input type="text" class="form-control" name="Students[${index}].StudentName" value="${selectedData.sName}" required placeholder="Student Name.."/></td>
+                                    <td><input type="text" class="form-control" name="Students[${index}].Address" value="${selectedData.sAddress}" required placeholder="Student Address.."/></td>
+                                    <td><input class="btn btn-danger" type="button" value="Remove" id="deleteBtn" /></td>
+                                 </tr>`
+            $("#studentTable").append(tr);
+        }
+        function getStudentData() {
+            let studentObj = {
+                sId: $("#sId").val(),
+                sName: $("#sName").val(),
+                sAddress: $("#sAddress").val(),
+            }
+            return studentObj;
+        }
+
+        // for Remove() Student
+        function Remove(e) {
+            e.closest("tr").remove();
+        }
+    </script>
+}
+

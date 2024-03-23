@@ -1,0 +1,90 @@
+﻿@model IEnumerable<NewMasterDetailFaculty.Models.Faculty>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Faculty List</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", "Faculty", htmlAttributes:new{@class="btn btn-primary"})
+</p>
+<table class="table table-dark table-striped">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PicPath)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FacultyName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CourseName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CourseStartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsRunning)
+        </th>
+        <th>Action..</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @if (item.PicPath != null)
+                {
+                    <img src="@Url.Content(item.PicPath)" alt="@item.FacultyName" class="rounded-circle" width="80" />
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FacultyName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseStartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsRunning)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }, htmlAttributes: new { @class = "btn btn-info" })
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID }, htmlAttributes: new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+        <tr>
+            <td colspan="7">
+                <table class="table table-secondary table-striped text-dark">
+                    <thead>
+                        <tr><th class="text-center " colspan="3">Student List</th></tr>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Address</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var std in item.Students)
+                        {
+                            <tr>
+                                <td>@std.ID</td>
+                                <td>@std.StudentName</td>
+                                <td>@std.Address</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    }
+
+</table>
