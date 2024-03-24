@@ -25,6 +25,15 @@ namespace NewMasterDetailFaculty.Controllers
         {
             if (ModelState.IsValid && faculty.Students != null && faculty.Students.Count > 0)
             {
+                foreach(var item in faculty.Students)
+                {
+                    var newItem = db.Students.Find(item.ID);
+                    if(newItem != null)
+                    {
+                        ModelState.AddModelError("", "This Student ID Already Use, Please Enter a Unique ID");
+                        return View(faculty);
+                    }
+                }
                 if (faculty.Picture != null)
                 {
                     var ext = Path.GetExtension(faculty.Picture.FileName);
