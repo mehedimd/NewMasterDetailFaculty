@@ -9,8 +9,9 @@
 <p>
     @Html.ActionLink("Create New", "Create", "Faculty", htmlAttributes:new{@class="btn btn-primary"})
 </p>
-<table class="table table-dark table-striped">
-    <tr>
+<table class="table table-bordered">
+    <tr class="bg-dark text-light">
+        <th>@Html.DisplayNameFor(model=> model.ID)</th>
         <th>
             @Html.DisplayNameFor(model => model.PicPath)
         </th>
@@ -35,10 +36,11 @@
     @foreach (var item in Model)
     {
         <tr>
+            <td>@Html.DisplayFor(modelItem=> item.ID)</td>
             <td>
                 @if (item.PicPath != null)
                 {
-                    <img src="@Url.Content(item.PicPath)" alt="@item.FacultyName" class="rounded-circle" width="80" />
+                    <img src="@Url.Content(item.PicPath)" alt="@item.FacultyName" class="img-thumbnail" width="80" />
                 }
             </td>
             <td>
@@ -61,11 +63,11 @@
                 @Html.ActionLink("Delete", "Delete", new { id = item.ID }, htmlAttributes: new { @class = "btn btn-danger" })
             </td>
         </tr>
-        <tr>
-            <td colspan="7">
-                <table class="table table-secondary table-striped text-dark">
-                    <thead>
-                        <tr><th class="text-center " colspan="3">Student List</th></tr>
+        <tr >
+            <td colspan="8">
+                <table class="table table-bordered text-center">
+                    <thead class="bg-success">
+                        <tr ><th class="text-center " colspan="3">Student List</th></tr>
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
